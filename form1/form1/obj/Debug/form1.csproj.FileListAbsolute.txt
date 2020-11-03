@@ -1,0 +1,11 @@
+C:\Users\Beomgu\source\repos\form1\form1\bin\Debug\form1.exe.config
+C:\Users\Beomgu\source\repos\form1\form1\bin\Debug\form1.exe
+C:\Users\Beomgu\source\repos\form1\form1\bin\Debug\form1.pdb
+C:\Users\Beomgu\source\repos\form1\form1\obj\Debug\form1.csprojAssemblyReference.cache
+C:\Users\Beomgu\source\repos\form1\form1\obj\Debug\form1.TEST_Field.resources
+C:\Users\Beomgu\source\repos\form1\form1\obj\Debug\form1.Properties.Resources.resources
+C:\Users\Beomgu\source\repos\form1\form1\obj\Debug\form1.csproj.GenerateResource.cache
+C:\Users\Beomgu\source\repos\form1\form1\obj\Debug\form1.csproj.CoreCompileInputs.cache
+C:\Users\Beomgu\source\repos\form1\form1\obj\Debug\form1.exe
+C:\Users\Beomgu\source\repos\form1\form1\obj\Debug\form1.pdb
+C:\Users\Beomgu\source\repos\form1\form1\obj\Debug\form1.Form_Input.resources
