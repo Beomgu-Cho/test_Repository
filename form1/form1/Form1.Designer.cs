@@ -52,13 +52,14 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.sS_Label1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.sS_Label3 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.sS_Label4 = new System.Windows.Forms.ToolStripStatusLabel();
             this.TB_SQLterminer = new System.Windows.Forms.TextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.sS_Combo1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.sS_Label5 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
             this.MN_TableClose = new System.Windows.Forms.ToolStripMenuItem();
+            this.Popup_Menu2 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.MN_SQLstart = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.DB_Grid1)).BeginInit();
             this.Popup_Menu1.SuspendLayout();
             this.Menu_Strip1.SuspendLayout();
@@ -67,6 +68,7 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.Popup_Menu2.SuspendLayout();
             this.SuspendLayout();
             // 
             // DB_Grid1
@@ -97,31 +99,31 @@
             this.MN_TableClose});
             this.Popup_Menu1.Name = "Popup_Menu1";
             this.Popup_Menu1.ShowImageMargin = false;
-            this.Popup_Menu1.Size = new System.Drawing.Size(186, 140);
+            this.Popup_Menu1.Size = new System.Drawing.Size(139, 112);
             // 
             // MN_addCol
             // 
             this.MN_addCol.Name = "MN_addCol";
-            this.MN_addCol.Size = new System.Drawing.Size(185, 24);
+            this.MN_addCol.Size = new System.Drawing.Size(138, 24);
             this.MN_addCol.Text = "Column 추가";
             this.MN_addCol.Click += new System.EventHandler(this.MN_addCol_Click);
             // 
             // MN_addRow
             // 
             this.MN_addRow.Name = "MN_addRow";
-            this.MN_addRow.Size = new System.Drawing.Size(185, 24);
+            this.MN_addRow.Size = new System.Drawing.Size(138, 24);
             this.MN_addRow.Text = "Row 추가";
             this.MN_addRow.Click += new System.EventHandler(this.MN_addRow_Click);
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(182, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(135, 6);
             // 
             // MN_DBUpdate
             // 
             this.MN_DBUpdate.Name = "MN_DBUpdate";
-            this.MN_DBUpdate.Size = new System.Drawing.Size(185, 24);
+            this.MN_DBUpdate.Size = new System.Drawing.Size(138, 24);
             this.MN_DBUpdate.Text = "DB 업데이트";
             this.MN_DBUpdate.Click += new System.EventHandler(this.MN_DBUpdate_Click);
             // 
@@ -235,7 +237,6 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.sS_Label1,
             this.sS_Label3,
-            this.sS_Label4,
             this.sS_Label5,
             this.sS_Combo1});
             this.statusStrip1.Location = new System.Drawing.Point(0, 715);
@@ -257,16 +258,12 @@
             this.sS_Label3.Name = "sS_Label3";
             this.sS_Label3.Size = new System.Drawing.Size(0, 20);
             // 
-            // sS_Label4
-            // 
-            this.sS_Label4.Name = "sS_Label4";
-            this.sS_Label4.Size = new System.Drawing.Size(0, 20);
-            // 
             // TB_SQLterminer
             // 
             this.TB_SQLterminer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.TB_SQLterminer.ContextMenuStrip = this.Popup_Menu2;
             this.TB_SQLterminer.Font = new System.Drawing.Font("NanumBarunGothic", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TB_SQLterminer.Location = new System.Drawing.Point(3, 3);
             this.TB_SQLterminer.Multiline = true;
@@ -314,14 +311,29 @@
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(182, 6);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(135, 6);
             // 
             // MN_TableClose
             // 
             this.MN_TableClose.Name = "MN_TableClose";
-            this.MN_TableClose.Size = new System.Drawing.Size(185, 24);
+            this.MN_TableClose.Size = new System.Drawing.Size(138, 24);
             this.MN_TableClose.Text = "Table Close";
             this.MN_TableClose.Click += new System.EventHandler(this.MN_TableClose_Click);
+            // 
+            // Popup_Menu2
+            // 
+            this.Popup_Menu2.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.Popup_Menu2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MN_SQLstart});
+            this.Popup_Menu2.Name = "Popup_Menu2";
+            this.Popup_Menu2.Size = new System.Drawing.Size(211, 56);
+            // 
+            // MN_SQLstart
+            // 
+            this.MN_SQLstart.Name = "MN_SQLstart";
+            this.MN_SQLstart.Size = new System.Drawing.Size(210, 24);
+            this.MN_SQLstart.Text = "SQL 실행";
+            this.MN_SQLstart.Click += new System.EventHandler(this.MN_SQLstart_Click);
             // 
             // TEST_Field
             // 
@@ -346,6 +358,7 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.Popup_Menu2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -376,12 +389,13 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem MN_DBUpdate;
-        private System.Windows.Forms.ToolStripStatusLabel sS_Label4;
         private System.Windows.Forms.ToolStripMenuItem MN_TestCmd3;
         private System.Windows.Forms.ToolStripStatusLabel sS_Label5;
         private System.Windows.Forms.ToolStripDropDownButton sS_Combo1;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem MN_TableClose;
+        private System.Windows.Forms.ContextMenuStrip Popup_Menu2;
+        private System.Windows.Forms.ToolStripMenuItem MN_SQLstart;
     }
 }
 

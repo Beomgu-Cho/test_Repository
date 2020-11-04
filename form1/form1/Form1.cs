@@ -116,7 +116,7 @@ namespace form1
         private void MN_TestCmd2_Click(object sender, EventArgs e)
         {
             RunSql("select * from facility");
-            sS_Label4.Text = "facility";
+            sS_Combo1.Text = "facility";
         }
 
         /* 함수 일반화 #n
@@ -138,7 +138,13 @@ namespace form1
                 }
                 else
                 {
-                    sCmd.CommandText = "close";
+                    if (DB_Grid1.Rows.Count != 0)
+                    {
+                        DB_Grid1.Rows.Clear();
+                        DB_Grid1.Columns.Clear();
+                    }
+                    
+
                     SqlDataReader sr = sCmd.ExecuteReader();  // record 단위로 명령처리
                     
                     for (int i=0; i<sr.FieldCount; i++)
@@ -153,6 +159,8 @@ namespace form1
                             DB_Grid1.Rows[i].Cells[ii].Value = sr.GetValue(ii);
                         }
                     }
+
+                    sr.Close();
                 }
 
                 sS_Label3.Text = "Sucessfully Apply.";
@@ -167,10 +175,29 @@ namespace form1
 
         private void TB_SQLterminer_KeyPress(object sender, KeyPressEventArgs e)
         {
+            string str = TB_SQLterminer.Text.Trim();
+            
+            // 마지막 문장추출 (ENTER KEY 입력기준)
+            // ENTER 입력시 실제 텍스트에는 '\r\n' 으로 입력됨.
+            string[] bStr = str.Split('\r');
+
+            string result = bStr.Last().Trim();
+            // Trim() ==> 화이트스페이스 제거
             if (e.KeyChar == '\r')
             {
-                string str = TB_SQLterminer.Text;
-                RunSql(str);
+                //for (int i = 0; i < bStr.Length; i++)
+                //{
+                //    if (result == "")
+                //    {
+                //        result = bStr[bStr.Length - (i + 1)].Trim();
+                //        continue;
+                //    }
+                //    else
+                //    {
+                //        break;
+                //    }
+                //}
+                RunSql(result);
             }
         }
 
@@ -178,7 +205,7 @@ namespace form1
         {          // update [table_name] set [Header]=[info] where [key]=[key_info's_row]
             try
             {
-                string tName = sS_Label4.Text;
+                string tName = sS_Combo1.Text;
                 string KeyHead = DB_Grid1.Columns[0].HeaderText;
 
                 for (int i=0; i<DB_Grid1.ColumnCount; i++)
@@ -226,7 +253,15 @@ namespace form1
 
         private void MN_TableClose_Click(object sender, EventArgs e)
         {
-            
+            DB_Grid1.Rows.Clear();
+            DB_Grid1.Columns.Clear();
+        }
+
+        private void MN_SQLstart_Click(object sender, EventArgs e)
+        {
+            string str = TB_SQLterminer.SelectedText.Trim();
+
+            RunSql(str);
         }
     }
 }
