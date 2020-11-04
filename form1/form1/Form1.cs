@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -63,6 +64,9 @@ namespace form1
                     sConn.Open();
                     sCmd.Connection = sConn;
 
+                    sS_Label5.Text = openFileDialog1.SafeFileName;
+                    sS_Label5.BackColor = Color.ForestGreen;
+
                     sS_Label1.Text = "Database Opened.";
                     sS_Label1.BackColor = Color.BlueViolet;
                     statusStrip1.BackColor = Color.AliceBlue;
@@ -72,9 +76,9 @@ namespace form1
                     for (int i=0; i<dt.Rows.Count; i++)
                     {
                         string str = dt.Rows[i].ItemArray[2].ToString();  // ItemArray[2] 가 table 이름
-                        sS_Label2.Text = "Tables";
-                        st_combobox1.Items.Add(str);
-                        st_combobox1.Text = str;
+                        
+                        sS_Combo1.DropDownItems.Add(str);
+                        sS_Combo1.Text = str;
                     }
                 }
             }
@@ -112,6 +116,7 @@ namespace form1
         private void MN_TestCmd2_Click(object sender, EventArgs e)
         {
             RunSql("select * from facility");
+            sS_Label4.Text = "facility";
         }
 
         /* 함수 일반화 #n
@@ -124,7 +129,7 @@ namespace form1
         {
             try
             {   // 첫번째 단어를 분리하고 소문자로 변환
-                string s1 = GetToken(0, sql, " ").ToLower();
+                string s1 = GetToken(0, sql, " ").ToLower(); 
                 sCmd.CommandText = sql;
 
                 if (s1 != "select")
@@ -133,7 +138,9 @@ namespace form1
                 }
                 else
                 {
+                    sCmd.CommandText = "close";
                     SqlDataReader sr = sCmd.ExecuteReader();  // record 단위로 명령처리
+                    
                     for (int i=0; i<sr.FieldCount; i++)
                     {
                         DB_Grid1.Columns.Add(sr.GetName(i), sr.GetName(i));                    
@@ -163,11 +170,63 @@ namespace form1
             if (e.KeyChar == '\r')
             {
                 string str = TB_SQLterminer.Text;
-
                 RunSql(str);
             }
         }
 
-       
+        private void MN_DBUpdate_Click(object sender, EventArgs e)
+        {          // update [table_name] set [Header]=[info] where [key]=[key_info's_row]
+            try
+            {
+                string tName = sS_Label4.Text;
+                string KeyHead = DB_Grid1.Columns[0].HeaderText;
+
+                for (int i=0; i<DB_Grid1.ColumnCount; i++)
+                {
+                    for (int ii=0; ii<DB_Grid1.RowCount; ii++)
+                    {
+                        if (DB_Grid1.Rows[ii].Cells[i].ToolTipText == ".")
+                        {
+                            string sHead = DB_Grid1.Columns[i].HeaderText;
+                            string sValue = DB_Grid1.Rows[ii].Cells[i].Value.ToString();
+                            string KeyValue = DB_Grid1.Rows[ii].Cells[0].Value.ToString();
+
+                            string sqlCmd = $"update {tName} set {sHead}='{sValue}' where {KeyHead}='{KeyValue}'";
+
+                            RunSql(sqlCmd);
+
+                            DB_Grid1.Rows[ii].Cells[i].ToolTipText = "";
+                        }
+                    }
+                }
+                sS_Label3.Text = "sucessfully Changed!!";
+            }
+            catch (Exception e1)
+            {
+                sS_Label3.Text = e1.Message;
+                sS_Label3.BackColor = Color.IndianRed;
+            }
+        }
+
+        public void DB_Grid1_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            int x = e.ColumnIndex;
+            int y = e.RowIndex;
+            DB_Grid1.Rows[y].Cells[x].ToolTipText = ".";
+        }
+
+        private void sS_Combo1_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            string str = e.ClickedItem.Text;
+            string sql = $"select * from {str}";
+            sS_Combo1.Text = str;
+
+            RunSql(sql);
+        }
+
+        private void MN_TableClose_Click(object sender, EventArgs e)
+        {
+            
+        }
     }
 }
