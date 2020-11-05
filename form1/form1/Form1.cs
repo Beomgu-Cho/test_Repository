@@ -501,9 +501,9 @@ namespace form1
 
         private void MN_CSVSave_Click(object sender, EventArgs e)
         {
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                StreamWriter sw = new StreamWriter(saveFileDialog.FileName);
+                StreamWriter sw = new StreamWriter(saveFileDialog1.FileName);
                 string str = "";
                 for (int i = 0; i < DB_Grid1.ColumnCount; i++)
                 {

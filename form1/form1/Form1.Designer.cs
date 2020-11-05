@@ -66,8 +66,8 @@
             this.MN_TableDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.MN_CSVImport = new System.Windows.Forms.ToolStripMenuItem();
             this.MN_CSVSave = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.DB_Grid1)).BeginInit();
             this.Popup_Menu1.SuspendLayout();
             this.Menu_Strip1.SuspendLayout();
@@ -410,15 +410,15 @@
             this.MN_CSVSave.Text = "CSV Save";
             this.MN_CSVSave.Click += new System.EventHandler(this.MN_CSVSave_Click);
             // 
-            // saveFileDialog
-            // 
-            this.saveFileDialog.FileName = "openFileDialog2";
-            this.saveFileDialog.Filter = "\"CSV file(*.csv)|*.csv\"";
-            // 
             // toolStripMenuItem5
             // 
             this.toolStripMenuItem5.Name = "toolStripMenuItem5";
             this.toolStripMenuItem5.Size = new System.Drawing.Size(285, 6);
+            // 
+            // saveFileDialog1
+            // 
+            this.saveFileDialog1.Filter = "\"CSV file (*.csv)|*.csv|Text file (*.txt)|*.txt\"";
+            this.saveFileDialog1.FilterIndex = 2;
             // 
             // TEST_Field
             // 
@@ -488,8 +488,8 @@
         private System.Windows.Forms.ToolStripMenuItem MN_TableDelete;
         private System.Windows.Forms.ToolStripMenuItem MN_CSVImport;
         private System.Windows.Forms.ToolStripMenuItem MN_CSVSave;
-        private System.Windows.Forms.OpenFileDialog saveFileDialog;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }
 
