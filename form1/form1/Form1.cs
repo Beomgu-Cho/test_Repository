@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -457,6 +459,71 @@ namespace form1
             {
                 cmd += sS_Combo1.Text;
                 RunSql(cmd);
+            }
+        }
+
+        private void MN_CSVImport_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DB_Grid1.Rows.Clear();
+                DB_Grid1.Columns.Clear();
+
+                if (openFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    StreamReader sr = new StreamReader(openFileDialog1.FileName);
+                    // StreamWriter sw = new StreamWriter(saveFileDialog.FileName);
+                    string str = sr.ReadLine();
+                    string[] sCols = str.Split(',');
+
+                    for (int i = 0; i < sCols.Length; i++)
+                        DB_Grid1.Columns.Add(sCols[i], sCols[i]);
+
+                    for (int i = 0; ; i++)
+                    {
+                        str = sr.ReadLine();
+                        if (str == null)
+                            break;
+
+                        DB_Grid1.Rows.Add();
+                        for (int ii = 0; ii < sCols.Length; ii++)
+                        {
+                            DB_Grid1.Rows[i].Cells[ii].Value = (string)GetToken(ii, str, ",").Trim();
+                        }
+                    }
+                }
+            }
+            catch (Exception e1)
+            {
+                sS_Label3.Text = e1.Message;
+            }
+        }
+
+        private void MN_CSVSave_Click(object sender, EventArgs e)
+        {
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                StreamWriter sw = new StreamWriter(saveFileDialog.FileName);
+                string str = "";
+                for (int i = 0; i < DB_Grid1.ColumnCount; i++)
+                {
+                    str += DB_Grid1.Columns[i].HeaderText;
+                    if (i < DB_Grid1.ColumnCount - 1)
+                        str += ",";
+                }
+                sw.WriteLine(str);
+
+                for (int i = 0; i < DB_Grid1.RowCount - 1; i++)
+                {
+                    str = "";
+                    for (int ii = 0; ii < DB_Grid1.ColumnCount; ii++)
+                    {
+                        str += (string)DB_Grid1.Rows[i].Cells[ii].Value;
+                        if (ii < DB_Grid1.ColumnCount - 1)
+                            str += ",";
+                    }
+                    sw.WriteLine(str);
+                }
             }
         }
     }

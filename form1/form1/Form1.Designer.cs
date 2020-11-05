@@ -64,6 +64,10 @@
             this.MN_delCol = new System.Windows.Forms.ToolStripMenuItem();
             this.MN_delRow = new System.Windows.Forms.ToolStripMenuItem();
             this.MN_TableDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.MN_CSVImport = new System.Windows.Forms.ToolStripMenuItem();
+            this.MN_CSVSave = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
             ((System.ComponentModel.ISupportInitialize)(this.DB_Grid1)).BeginInit();
             this.Popup_Menu1.SuspendLayout();
             this.Menu_Strip1.SuspendLayout();
@@ -108,50 +112,50 @@
             this.MN_TableClose});
             this.Popup_Menu1.Name = "Popup_Menu1";
             this.Popup_Menu1.ShowImageMargin = false;
-            this.Popup_Menu1.Size = new System.Drawing.Size(186, 236);
+            this.Popup_Menu1.Size = new System.Drawing.Size(139, 208);
             // 
             // MN_addCol
             // 
             this.MN_addCol.Name = "MN_addCol";
-            this.MN_addCol.Size = new System.Drawing.Size(185, 24);
+            this.MN_addCol.Size = new System.Drawing.Size(138, 24);
             this.MN_addCol.Text = "Column 추가";
             this.MN_addCol.Click += new System.EventHandler(this.MN_addCol_Click);
             // 
             // MN_addRow
             // 
             this.MN_addRow.Name = "MN_addRow";
-            this.MN_addRow.Size = new System.Drawing.Size(185, 24);
+            this.MN_addRow.Size = new System.Drawing.Size(138, 24);
             this.MN_addRow.Text = "Row 추가";
             this.MN_addRow.Click += new System.EventHandler(this.MN_addRow_Click);
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(182, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(135, 6);
             // 
             // MN_DBUpdate
             // 
             this.MN_DBUpdate.Name = "MN_DBUpdate";
-            this.MN_DBUpdate.Size = new System.Drawing.Size(185, 24);
+            this.MN_DBUpdate.Size = new System.Drawing.Size(138, 24);
             this.MN_DBUpdate.Text = "DB 업데이트";
             this.MN_DBUpdate.Click += new System.EventHandler(this.MN_DBUpdate_Click);
             // 
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(182, 6);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(135, 6);
             // 
             // MN_TableSave
             // 
             this.MN_TableSave.Name = "MN_TableSave";
-            this.MN_TableSave.Size = new System.Drawing.Size(185, 24);
+            this.MN_TableSave.Size = new System.Drawing.Size(138, 24);
             this.MN_TableSave.Text = "Table 저장";
             this.MN_TableSave.Click += new System.EventHandler(this.MN_TableSave_Click);
             // 
             // MN_TableClose
             // 
             this.MN_TableClose.Name = "MN_TableClose";
-            this.MN_TableClose.Size = new System.Drawing.Size(185, 24);
+            this.MN_TableClose.Size = new System.Drawing.Size(138, 24);
             this.MN_TableClose.Text = "Table 닫기";
             this.MN_TableClose.Click += new System.EventHandler(this.MN_TableClose_Click);
             // 
@@ -165,7 +169,7 @@
             this.Menu_Strip1.Location = new System.Drawing.Point(0, 0);
             this.Menu_Strip1.Name = "Menu_Strip1";
             this.Menu_Strip1.Padding = new System.Windows.Forms.Padding(10, 2, 0, 2);
-            this.Menu_Strip1.Size = new System.Drawing.Size(670, 28);
+            this.Menu_Strip1.Size = new System.Drawing.Size(670, 30);
             this.Menu_Strip1.TabIndex = 5;
             this.Menu_Strip1.Text = "menuStrip1";
             // 
@@ -174,6 +178,9 @@
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MN_dbOpen,
             this.MN_dbClose,
+            this.toolStripMenuItem5,
+            this.MN_CSVImport,
+            this.MN_CSVSave,
             this.toolStripMenuItem1,
             this.MN_Close});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
@@ -227,26 +234,26 @@
             // MN_TestCmd1
             // 
             this.MN_TestCmd1.Name = "MN_TestCmd1";
-            this.MN_TestCmd1.Size = new System.Drawing.Size(126, 26);
+            this.MN_TestCmd1.Size = new System.Drawing.Size(224, 26);
             this.MN_TestCmd1.Text = "Test1";
             this.MN_TestCmd1.Click += new System.EventHandler(this.MN_TestCmd1_Click);
             // 
             // MN_TestCmd2
             // 
             this.MN_TestCmd2.Name = "MN_TestCmd2";
-            this.MN_TestCmd2.Size = new System.Drawing.Size(126, 26);
+            this.MN_TestCmd2.Size = new System.Drawing.Size(224, 26);
             this.MN_TestCmd2.Text = "Test2";
             this.MN_TestCmd2.Click += new System.EventHandler(this.MN_TestCmd2_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(123, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(221, 6);
             // 
             // MN_TestCmd3
             // 
             this.MN_TestCmd3.Name = "MN_TestCmd3";
-            this.MN_TestCmd3.Size = new System.Drawing.Size(126, 26);
+            this.MN_TestCmd3.Size = new System.Drawing.Size(224, 26);
             this.MN_TestCmd3.Text = "Test3";
             // 
             // viewToolStripMenuItem
@@ -369,23 +376,49 @@
             // MN_delCol
             // 
             this.MN_delCol.Name = "MN_delCol";
-            this.MN_delCol.Size = new System.Drawing.Size(185, 24);
+            this.MN_delCol.Size = new System.Drawing.Size(138, 24);
             this.MN_delCol.Text = "Column 삭제";
             this.MN_delCol.Click += new System.EventHandler(this.MN_delCol_Click);
             // 
             // MN_delRow
             // 
             this.MN_delRow.Name = "MN_delRow";
-            this.MN_delRow.Size = new System.Drawing.Size(185, 24);
+            this.MN_delRow.Size = new System.Drawing.Size(138, 24);
             this.MN_delRow.Text = "Row 삭제";
             this.MN_delRow.Click += new System.EventHandler(this.MN_delRow_Click);
             // 
             // MN_TableDelete
             // 
             this.MN_TableDelete.Name = "MN_TableDelete";
-            this.MN_TableDelete.Size = new System.Drawing.Size(185, 24);
+            this.MN_TableDelete.Size = new System.Drawing.Size(138, 24);
             this.MN_TableDelete.Text = "Table 삭제";
             this.MN_TableDelete.Click += new System.EventHandler(this.MN_TableDelete_Click);
+            // 
+            // MN_CSVImport
+            // 
+            this.MN_CSVImport.Name = "MN_CSVImport";
+            this.MN_CSVImport.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.C)));
+            this.MN_CSVImport.Size = new System.Drawing.Size(288, 26);
+            this.MN_CSVImport.Text = "CSV Import";
+            this.MN_CSVImport.Click += new System.EventHandler(this.MN_CSVImport_Click);
+            // 
+            // MN_CSVSave
+            // 
+            this.MN_CSVSave.Name = "MN_CSVSave";
+            this.MN_CSVSave.Size = new System.Drawing.Size(288, 26);
+            this.MN_CSVSave.Text = "CSV Save";
+            this.MN_CSVSave.Click += new System.EventHandler(this.MN_CSVSave_Click);
+            // 
+            // saveFileDialog
+            // 
+            this.saveFileDialog.FileName = "openFileDialog2";
+            this.saveFileDialog.Filter = "\"CSV file(*.csv)|*.csv\"";
+            // 
+            // toolStripMenuItem5
+            // 
+            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(285, 6);
             // 
             // TEST_Field
             // 
@@ -453,6 +486,10 @@
         private System.Windows.Forms.ToolStripMenuItem MN_delCol;
         private System.Windows.Forms.ToolStripMenuItem MN_delRow;
         private System.Windows.Forms.ToolStripMenuItem MN_TableDelete;
+        private System.Windows.Forms.ToolStripMenuItem MN_CSVImport;
+        private System.Windows.Forms.ToolStripMenuItem MN_CSVSave;
+        private System.Windows.Forms.OpenFileDialog saveFileDialog;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
     }
 }
 
