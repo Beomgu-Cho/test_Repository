@@ -23,11 +23,13 @@ namespace form1
             if (e.KeyChar == '\r') // [Enter] ==> <\r>, <13>, <0x0d>
             {
                 sRet = TB_input1.Text;
+                DialogResult = DialogResult.OK;
                 Close();
             }
             else if (e.KeyChar == 27)
             {
                 sRet = "";
+                DialogResult = DialogResult.Cancel;
                 Close();
             }
         }

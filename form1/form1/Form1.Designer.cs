@@ -37,6 +37,7 @@
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.MN_DBUpdate = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+            this.MN_TableSave = new System.Windows.Forms.ToolStripMenuItem();
             this.MN_TableClose = new System.Windows.Forms.ToolStripMenuItem();
             this.Menu_Strip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -60,7 +61,9 @@
             this.Popup_Menu2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.MN_SQLstart = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.MN_TableSave = new System.Windows.Forms.ToolStripMenuItem();
+            this.MN_delCol = new System.Windows.Forms.ToolStripMenuItem();
+            this.MN_delRow = new System.Windows.Forms.ToolStripMenuItem();
+            this.MN_TableDelete = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.DB_Grid1)).BeginInit();
             this.Popup_Menu1.SuspendLayout();
             this.Menu_Strip1.SuspendLayout();
@@ -83,9 +86,10 @@
             this.DB_Grid1.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.DB_Grid1.Name = "DB_Grid1";
             this.DB_Grid1.RowHeadersWidth = 51;
-            this.DB_Grid1.Size = new System.Drawing.Size(662, 283);
+            this.DB_Grid1.Size = new System.Drawing.Size(662, 281);
             this.DB_Grid1.TabIndex = 0;
             this.DB_Grid1.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.DB_Grid1_CellBeginEdit);
+            this.DB_Grid1.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.DB_Grid1_RowsAdded);
             // 
             // Popup_Menu1
             // 
@@ -93,15 +97,18 @@
             this.Popup_Menu1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.Popup_Menu1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MN_addCol,
+            this.MN_delCol,
             this.MN_addRow,
+            this.MN_delRow,
             this.toolStripMenuItem3,
             this.MN_DBUpdate,
             this.toolStripMenuItem4,
             this.MN_TableSave,
+            this.MN_TableDelete,
             this.MN_TableClose});
             this.Popup_Menu1.Name = "Popup_Menu1";
             this.Popup_Menu1.ShowImageMargin = false;
-            this.Popup_Menu1.Size = new System.Drawing.Size(186, 164);
+            this.Popup_Menu1.Size = new System.Drawing.Size(186, 236);
             // 
             // MN_addCol
             // 
@@ -133,6 +140,13 @@
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
             this.toolStripMenuItem4.Size = new System.Drawing.Size(182, 6);
+            // 
+            // MN_TableSave
+            // 
+            this.MN_TableSave.Name = "MN_TableSave";
+            this.MN_TableSave.Size = new System.Drawing.Size(185, 24);
+            this.MN_TableSave.Text = "Table 저장";
+            this.MN_TableSave.Click += new System.EventHandler(this.MN_TableSave_Click);
             // 
             // MN_TableClose
             // 
@@ -254,30 +268,37 @@
             this.sS_Label3,
             this.sS_Label5,
             this.sS_Combo1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 478);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 474);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(2, 0, 17, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(670, 26);
+            this.statusStrip1.Size = new System.Drawing.Size(670, 30);
             this.statusStrip1.TabIndex = 6;
             this.statusStrip1.Text = "statusStrip1";
             // 
             // sS_Label1
             // 
+            this.sS_Label1.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.sS_Label1.BorderStyle = System.Windows.Forms.Border3DStyle.Etched;
+            this.sS_Label1.DoubleClickEnabled = true;
             this.sS_Label1.Name = "sS_Label1";
-            this.sS_Label1.Size = new System.Drawing.Size(122, 20);
+            this.sS_Label1.Size = new System.Drawing.Size(126, 24);
             this.sS_Label1.Text = "Database check...";
+            this.sS_Label1.DoubleClick += new System.EventHandler(this.sS_Label1_DoubleClick);
+            this.sS_Label1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.sS_Label1_MouseDown);
+            this.sS_Label1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.sS_Label1_MouseUp);
             // 
             // sS_Label3
             // 
             this.sS_Label3.BorderStyle = System.Windows.Forms.Border3DStyle.Etched;
             this.sS_Label3.Name = "sS_Label3";
-            this.sS_Label3.Size = new System.Drawing.Size(0, 20);
+            this.sS_Label3.Size = new System.Drawing.Size(0, 24);
             // 
             // sS_Label5
             // 
             this.sS_Label5.Name = "sS_Label5";
-            this.sS_Label5.Size = new System.Drawing.Size(106, 20);
+            this.sS_Label5.Size = new System.Drawing.Size(106, 24);
             this.sS_Label5.Text = "SQL Message...";
             // 
             // sS_Combo1
@@ -286,7 +307,7 @@
             this.sS_Combo1.Image = ((System.Drawing.Image)(resources.GetObject("sS_Combo1.Image")));
             this.sS_Combo1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.sS_Combo1.Name = "sS_Combo1";
-            this.sS_Combo1.Size = new System.Drawing.Size(73, 24);
+            this.sS_Combo1.Size = new System.Drawing.Size(73, 28);
             this.sS_Combo1.Text = "Tables...";
             this.sS_Combo1.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.sS_Combo1_DropDownItemClicked);
             // 
@@ -345,12 +366,26 @@
             this.splitContainer1.SplitterWidth = 6;
             this.splitContainer1.TabIndex = 8;
             // 
-            // MN_TableSave
+            // MN_delCol
             // 
-            this.MN_TableSave.Name = "MN_TableSave";
-            this.MN_TableSave.Size = new System.Drawing.Size(185, 24);
-            this.MN_TableSave.Text = "Table 저장";
-            this.MN_TableSave.Click += new System.EventHandler(this.MN_TableSave_Click);
+            this.MN_delCol.Name = "MN_delCol";
+            this.MN_delCol.Size = new System.Drawing.Size(185, 24);
+            this.MN_delCol.Text = "Column 삭제";
+            this.MN_delCol.Click += new System.EventHandler(this.MN_delCol_Click);
+            // 
+            // MN_delRow
+            // 
+            this.MN_delRow.Name = "MN_delRow";
+            this.MN_delRow.Size = new System.Drawing.Size(185, 24);
+            this.MN_delRow.Text = "Row 삭제";
+            this.MN_delRow.Click += new System.EventHandler(this.MN_delRow_Click);
+            // 
+            // MN_TableDelete
+            // 
+            this.MN_TableDelete.Name = "MN_TableDelete";
+            this.MN_TableDelete.Size = new System.Drawing.Size(185, 24);
+            this.MN_TableDelete.Text = "Table 삭제";
+            this.MN_TableDelete.Click += new System.EventHandler(this.MN_TableDelete_Click);
             // 
             // TEST_Field
             // 
@@ -415,6 +450,9 @@
         private System.Windows.Forms.ContextMenuStrip Popup_Menu2;
         private System.Windows.Forms.ToolStripMenuItem MN_SQLstart;
         private System.Windows.Forms.ToolStripMenuItem MN_TableSave;
+        private System.Windows.Forms.ToolStripMenuItem MN_delCol;
+        private System.Windows.Forms.ToolStripMenuItem MN_delRow;
+        private System.Windows.Forms.ToolStripMenuItem MN_TableDelete;
     }
 }
 

@@ -21,18 +21,18 @@ namespace form1
         }
 
         string sConnString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Beomgu\source\repos\MyTable.mdf;Integrated Security = True; Connect Timeout = 30";
-        
+
         SqlConnection sConn = new SqlConnection();
         SqlCommand sCmd = new SqlCommand();
 
         private void MN_addCol_Click(object sender, EventArgs e)
         {
             Form_Input dlg = new Form_Input();
-            dlg.ShowDialog();
-            string str = dlg.sRet;
-
-            if (str != "")
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                string str = dlg.sRet;
                 DB_Grid1.Columns.Add(str, str);
+            }
         }
 
         private void MN_addRow_Click(object sender, EventArgs e)
@@ -49,7 +49,7 @@ namespace form1
 
         private void MN_dbOpen_Click(object sender, EventArgs e)
         {
-            try 
+            try
             {
                 openFileDialog1.ValidateNames = false;
 
@@ -69,15 +69,7 @@ namespace form1
                     sS_Label1.BackColor = Color.BlueViolet;
                     statusStrip1.BackColor = Color.AliceBlue;
 
-                    DataTable dt = sConn.GetSchema("Tables");
-
-                    for (int i=0; i<dt.Rows.Count; i++)
-                    {
-                        string str = dt.Rows[i].ItemArray[2].ToString();  // ItemArray[2] 가 table 이름
-                        
-                        sS_Combo1.DropDownItems.Add(str);
-                        sS_Combo1.Text = "";
-                    }
+                    RefreshTables();
                 }
             }
             catch (Exception e1)
@@ -127,7 +119,7 @@ namespace form1
         {
             try
             {   // 첫번째 단어를 분리하고 소문자로 변환
-                string s1 = GetToken(0, sql, " ").ToLower(); 
+                string s1 = GetToken(0, sql, " ").ToLower();
                 sCmd.CommandText = sql;
 
                 if (s1 != "select")
@@ -139,18 +131,20 @@ namespace form1
                         DB_Grid1.Rows.Clear();
                         DB_Grid1.Columns.Clear();
                     }
-                    
+
                     SqlDataReader sr = sCmd.ExecuteReader();  // record 단위로 명령처리
-                    
-                    for (int i=0; i<sr.FieldCount; i++)
-                        DB_Grid1.Columns.Add(sr.GetName(i), sr.GetName(i));                    
-            
-                    for (int i=0; sr.Read(); i++)   // 읽을 record가 있으면 true
+
+                    for (int i = 0; i < sr.FieldCount; i++)
+                        DB_Grid1.Columns.Add(sr.GetName(i), sr.GetName(i));
+
+                    for (int i = 0; sr.Read(); i++)   // 읽을 record가 있으면 true
                     {                               // 없으면 false
                         DB_Grid1.Rows.Add();
 
-                        for (int ii=0; ii<sr.FieldCount; ii++)
-                            DB_Grid1.Rows[i].Cells[ii].Value = sr.GetValue(ii).ToString().Trim();   
+                        for (int ii = 0; ii < sr.FieldCount; ii++)
+                        {
+                            DB_Grid1.Rows[i].Cells[ii].Value = sr.GetValue(ii).ToString().Trim();
+                        }
                     }
                     string[] ssql = sql.Trim().Split(' ');
 
@@ -158,8 +152,9 @@ namespace form1
                         sS_Combo1.Text = ssql.Last();
                     else
                         sS_Combo1.Text = "";
-                    
+
                     sr.Close();
+                    DB_Grid1.Rows[0].Cells[0].ToolTipText = "";
                 }
 
                 sS_Label3.Text = "Sucessfully Apply.";
@@ -204,7 +199,6 @@ namespace form1
                 {
                     MessageBox.Show(e1.Message);
                 }
-                
                 // for (int i = 0; i < bStr.Length; i++)
                 // {
                 //     if (result == "")
@@ -217,9 +211,8 @@ namespace form1
                 //         break;
                 //     }
                 // }        
-                // 처음 텍스트를 받아올 때 문장 전체의 텍스트에 Trim() 을 이용하면 간단하게 해결
-                
-            }   
+                // 처음 텍스트를 받아올 때 문장 전체의 텍스트에 Trim() 을 이용하면 간단하게 해결   
+            }
         }
 
         private void MN_DBUpdate_Click(object sender, EventArgs e)
@@ -229,22 +222,42 @@ namespace form1
                 string tName = sS_Combo1.Text;
                 string KeyHead = DB_Grid1.Columns[0].HeaderText;
 
-                for (int i=0; i<DB_Grid1.ColumnCount; i++)
+                for (int i = 0; i < DB_Grid1.RowCount; i++)
                 {
-                    for (int ii=0; ii<DB_Grid1.RowCount; ii++)
+                    if (DB_Grid1.Rows[i].Cells[0].ToolTipText != "!")
                     {
-                        if (DB_Grid1.Rows[ii].Cells[i].ToolTipText == ".")
+                        for (int ii = 0; ii < DB_Grid1.ColumnCount; ii++)
                         {
-                            string sHead = DB_Grid1.Columns[i].HeaderText;
-                            string sValue = DB_Grid1.Rows[ii].Cells[i].Value.ToString();
-                            string KeyValue = DB_Grid1.Rows[ii].Cells[0].Value.ToString();
 
-                            string sqlCmd = $"update {tName} set {sHead}=N'{sValue}' where {KeyHead}='{KeyValue}'";
+                            if (DB_Grid1.Rows[i].Cells[ii].ToolTipText == ".")
+                            {
+                                string sHead = DB_Grid1.Columns[ii].HeaderText;
+                                string sValue = $"{DB_Grid1.Rows[i].Cells[ii].Value}";
+                                string KeyValue = $"{DB_Grid1.Rows[i].Cells[0].Value}";
 
-                            RunSql(sqlCmd);
+                                string sqlCmd = $"update {tName} set {sHead}=N'{sValue}' where {KeyHead}='{KeyValue}'";
 
-                            DB_Grid1.Rows[ii].Cells[i].ToolTipText = "";
+                                RunSql(sqlCmd);
+
+                                DB_Grid1.Rows[i].Cells[ii].ToolTipText = "";
+                            }
                         }
+                    }
+                    else
+                    {
+                        string Insert_cmd = $"insert into {tName} values (";
+
+                        for (int ii = 0; ii < DB_Grid1.ColumnCount; ii++)
+                        {
+                            // insert into [table_name] values ([va1], [val2], ..., [val])
+
+                            Insert_cmd += $"'{DB_Grid1.Rows[i].Cells[ii].Value}'";
+                            if (ii != DB_Grid1.ColumnCount - 1)
+                                Insert_cmd += ",";
+                        }
+                        Insert_cmd += ")";
+
+                        RunSql(Insert_cmd);
                     }
                 }
                 sS_Label3.Text = "sucessfully Changed!!";
@@ -260,7 +273,8 @@ namespace form1
         {
             int x = e.ColumnIndex;
             int y = e.RowIndex;
-            DB_Grid1.Rows[y].Cells[x].ToolTipText = ".";
+            if (DB_Grid1.Rows[y].Cells[x].ToolTipText != "!")
+                DB_Grid1.Rows[y].Cells[x].ToolTipText = ".";
         }
 
         private void sS_Combo1_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -270,6 +284,8 @@ namespace form1
             sS_Combo1.Text = str;
 
             RunSql(sql);
+
+            DB_Grid1.Rows[0].Cells[0].ToolTipText = "";
         }
 
         private void MN_TableClose_Click(object sender, EventArgs e)
@@ -308,15 +324,13 @@ namespace form1
                 RunSql(sql);
 
                 // insert into [table_name] values ([va1], [val2], ..., [val])
-                
                 for (int i = 0; i < DB_Grid1.RowCount - 1; i++)
                 {
                     sql = $"insert into {sTable} values (";
                     for (int ii = 0; ii < DB_Grid1.ColumnCount; ii++)
                     {
-                        string sVal = $"'{DB_Grid1.Rows[i].Cells[ii].Value}'";
-                        sql += sVal;
-                        if (ii != DB_Grid1.ColumnCount - 1)
+                        sql += $"'{DB_Grid1.Rows[i].Cells[ii].Value}'";
+                        if (ii < DB_Grid1.ColumnCount - 1)
                             sql += ",";
                     }
 
@@ -339,8 +353,8 @@ namespace form1
                             if (DB_Grid1.Rows[ii].Cells[i].ToolTipText == ".")
                             {
                                 string sHead = DB_Grid1.Columns[i].HeaderText;
-                                string sValue = DB_Grid1.Rows[ii].Cells[i].Value.ToString();
-                                string KeyValue = DB_Grid1.Rows[ii].Cells[0].Value.ToString();
+                                string sValue = (string)DB_Grid1.Rows[ii].Cells[i].Value;
+                                string KeyValue = (string)DB_Grid1.Rows[ii].Cells[0].Value;
 
                                 string sqlCmd = $"update {tName} set {sHead}=N'{sValue}' where {KeyHead}=N'{KeyValue}'";
 
@@ -359,5 +373,103 @@ namespace form1
                 }
             }
         }
+
+        private void sS_Label1_DoubleClick(object sender, EventArgs e)
+        {
+            try
+            {
+                RefreshTables();
+            }
+            catch
+            {
+                sConn.ConnectionString = sConnString;
+                RefreshTables();
+            }
+        }
+
+        private void RefreshTables()
+        {
+            sS_Combo1.DropDownItems.Clear();      // 기존 테이블의 아이템 삭제...
+            DataTable dt = sConn.GetSchema("Tables");
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                string str = dt.Rows[i].ItemArray[2].ToString();  // ItemArray[2] 가 table 이름
+
+                sS_Combo1.DropDownItems.Add(str);
+                sS_Combo1.Text = "";
+            }
+        }
+
+        private void sS_Label1_MouseDown(object sender, MouseEventArgs e)
+        {
+            sS_Label1.BorderStyle = Border3DStyle.Sunken;
+        }
+
+        private void sS_Label1_MouseUp(object sender, MouseEventArgs e)
+        {
+            sS_Label1.BorderStyle = Border3DStyle.Etched;
+        }
+
+        private void DB_Grid1_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            DB_Grid1.Rows[e.RowCount - 1].Cells[0].ToolTipText = "!";
+        }
+
+        private void MN_delCol_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < DB_Grid1.SelectedCells.Count; i++)
+            {
+                int y = DB_Grid1.SelectedCells[i].ColumnIndex;
+
+                string colHead = DB_Grid1.Columns[y].HeaderText;
+                if (sS_Combo1.Text != "")
+                {
+                    string cmd = $"alter table {sS_Combo1.Text} drop column {colHead}";
+
+                    RunSql(cmd);
+                } 
+            }
+        }
+
+        private void MN_delRow_Click(object sender, EventArgs e)
+        {
+            string key = DB_Grid1.Columns[0].HeaderText;
+            for (int i = 0; i < DB_Grid1.SelectedCells.Count; i++)
+            {
+                int x = DB_Grid1.SelectedCells[i].RowIndex;
+
+                string key_val = (string)DB_Grid1.Rows[x].Cells[0].Value;
+                if (sS_Combo1.Text != "")
+                {
+                    string cmd = $"delete {sS_Combo1.Text} where {key}={key_val}";
+
+                    RunSql(cmd);
+                }
+            }
+        }
+
+        private void MN_TableDelete_Click(object sender, EventArgs e)
+        {
+            string cmd = "drop table ";
+
+            if (sS_Combo1.Text != "")
+            {
+                cmd += sS_Combo1.Text;
+                RunSql(cmd);
+            }
+        }
     }
 }
+/*       
+ *       [   SQL Commend   ]
+ * 
+ *       <JOIN>
+ *       select * from facility inner join fGps on facility.fcode=fGps.fcode;
+ *       select id, facility.fcode, fname, fmodel, floc_x, floc_y from facility inner join fgps on facility.fcode=fgps.fcode;
+ *       <AS>
+ *       select id, A.fcode, fname, fmodel, floc_x, floc_y from facility as A inner join fgps as B on A.fcode=B.fcode;
+ *       <DELETE>
+ *       delete [table_name] where [key]=[key_value]
+ *
+ */
